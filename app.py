@@ -248,3 +248,43 @@ def build_excel_for_user(user_key: str):
             "部门": user_info["department"],
             "员工号": user_info["employee_id"],
             "分数": score,
+            "是否通过(≥80)": "PASS" if passed == 1 else "FAIL",
+            "开始时间(UTC)": started_at,
+            "提交时间(UTC)": submitted_at,
+            "范围": ",".join(sys_list) if sys_list else "全部"
+        })
+    df_attempts = pd.DataFrame(attempt_rows)
+
+    # Sheet2: answers（默认导出最近一次attempt的明细，便于盖章核对）
+    df_answers = pd.DataFrame()
+    if attempts:
+        latest_attempt_id = attempts[0][0]
+        ans = quiz_db.get_attempt_answers(latest_attempt_id)
+        df_answers = pd.DataFrame([{
+            "Attempt ID": latest_attempt_id,
+            "题目ID": qid,
+            "系统": sys,
+            "题型": qtype,
+            "你的答案": ua,
+            "正确答案": ca,
+            "是否正确": "✅" if ic == 1 else "❌"
+        } for (qid, sys, qtype, ua, ca, ic) in ans])
+
+    bio = BytesIO()
+    with pd.ExcelWriter(bio, engine="openpyxl") as writer:
+        df_attempts.to_excel(writer, index=False, sheet_name="attempts")
+        if not df_answers.empty:
+            df_answers.to_excel(writer, index=False, sheet_name="latest_answers")
+    bio.seek(0)
+    return bio.getvalue()
+
+excel_bytes = build_excel_for_user(user_key)
+
+st.download_button(
+    label="📥 下载我的成绩单（attempts + 最近一次明细）",
+    data=excel_bytes,
+    file_name=f"quiz_score_{user_key}.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+)
+
+st.caption("提示：成绩单字段包含姓名/部门/员工号/得分/是否通过/时间，便于线下盖章核对。【2-a582d9】")
