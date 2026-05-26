@@ -1,5 +1,6 @@
 import json
 import random
+import time
 from datetime import datetime
 from io import BytesIO
 
@@ -9,12 +10,27 @@ import streamlit as st
 import quiz_db
 
 st.set_page_config(page_title="随机抽题考试", layout="wide")
-st.title("🎯 随机抽题考试（抽5题 / 自动评分 / ≥80分可线下盖章）")
+st.title("🎯 随机抽题考试（抽5题 / 自动评分 / ≥80分可转盘抽奖）")
 
-# 初始化 DB（提醒：Community Cloud 本地文件不保证持久化）
+# ---------------- 配置：考试与抽奖 ----------------
+QUESTIONS_PER_QUIZ = 5
+POINTS_PER_Q = 20
+PASS_SCORE = 80
+
+# ✅ 奖品配置：把 XX 改成真实数量
+PRIZE_CONFIG = {
+    "一等奖": {"total": 13, "prize_name": "一等奖"},
+    "二等奖": {"total": 20, "prize_name": "二等奖"},
+    "三等奖": {"total": 100, "prize_name": "三等奖"},
+}
+# 权重（可调）：权重越大越容易抽中（前提是该奖项还有库存）
+PRIZE_WEIGHTS = {"一等奖": 1, "二等奖": 3, "三等奖": 6}
+
+# ---------------- 初始化DB ----------------
 quiz_db.init_db()
+quiz_db.seed_prize_inventory_if_empty(PRIZE_CONFIG)
 
-# ====== 读取题库 ======
+# ---------------- 读取题库 ----------------
 @st.cache_data
 def load_bank(path="question_bank.json"):
     with open(path, "r", encoding="utf-8") as f:
@@ -23,16 +39,12 @@ def load_bank(path="question_bank.json"):
 bank = load_bank()
 all_questions = bank["questions"]
 
-POINTS_PER_Q = bank["meta"]["quiz_default"]["points_per_question"]
-PASS_SCORE = bank["meta"]["quiz_default"]["pass_score"]
-QUESTIONS_PER_QUIZ = bank["meta"]["quiz_default"]["questions_per_quiz"]
-
-# ====== 用户信息（用于“谁考了”记录）=====
-st.subheader("👤 考生信息（用于成绩记录/盖章核对）")
+# ---------------- 用户信息 ----------------
+st.subheader("👤 考生信息（用于成绩/中奖记录）")
 col1, col2, col3 = st.columns(3)
 name = col1.text_input("姓名（必填）", value=st.session_state.get("name", ""))
 dept = col2.text_input("部门（可选）", value=st.session_state.get("dept", ""))
-empid = col3.text_input("员工编号（强烈建议填写，用于锁定“一天一次提交”）", value=st.session_state.get("empid", ""))
+empid = col3.text_input("员工编号（建议填写，用于唯一识别/一天一次）", value=st.session_state.get("empid", ""))
 
 st.session_state["name"] = name
 st.session_state["dept"] = dept
@@ -42,38 +54,34 @@ if not name.strip():
     st.warning("请先填写姓名再开始考试。")
     st.stop()
 
-# user_key：优先员工号；没有则姓名|部门（没员工号时防刷能力会弱一些）
 user_key = empid.strip() if empid.strip() else f"{name.strip()}|{dept.strip()}"
 user_info = {"user_key": user_key, "name": name.strip(), "department": dept.strip(), "employee_id": empid.strip()}
 
 today = quiz_db.today_utc()
 
-# ====== 今天是否已经提交过？（一天一次提交限制）=====
+# ---------------- 一天一次提交限制 ----------------
 already = quiz_db.has_attempt_on_date(user_key, today)
 latest_today = quiz_db.get_latest_attempt_on_date(user_key, today) if already else None
-
 if already:
-    st.warning(f"⛔ 你今天（{today}，UTC日期）已经提交过一次考试，为防刷分，今天不能再次提交。")
+    st.warning(f"⛔ 你今天（{today}，UTC）已提交过一次考试，为避免重复刷分，今天不能再次提交。")
     if latest_today:
-        attempt_id, score, passed, submitted_at, systems_json = latest_today
-        st.info(f"你今天最新一次：Attempt ID={attempt_id}，得分={score}，是否通过={'✅' if passed==1 else '❌'}，提交时间={submitted_at}")
+        attempt_id, score, passed, submitted_at, _ = latest_today
+        st.info(f"今天最新一次：Attempt ID={attempt_id}，得分={score}，是否通过={'✅' if passed==1 else '❌'}，提交时间={submitted_at}")
 
-# ====== 选择题库范围（系统筛选） ======
+# ---------------- 题库范围筛选（可选） ----------------
 systems = sorted(list({q["system"] for q in all_questions}))
 selected_systems = st.multiselect("选择题库范围（不选=全部）", systems, default=[])
-
 candidate = [q for q in all_questions if (not selected_systems or q["system"] in selected_systems)]
-st.caption(f"当前可用题目数：{len(candidate)}（系统筛选后）")
 
+st.caption(f"当前可用题目数：{len(candidate)}")
 if len(candidate) < QUESTIONS_PER_QUIZ:
-    st.error("题目数量不足5题，请调整筛选范围。")
+    st.error("题库题目少于5题，无法抽题。请调整筛选。")
     st.stop()
 
-# ====== 避免重复抽题：读取用户已做过的题ID ======
+# ---------------- 避免重复抽题 ----------------
 seen_set = quiz_db.get_seen_set(user_key)
 
 def pick_questions_without_repeat(pool, seen, k):
-    """优先抽未做过的；不够k则用已做过补齐，并返回补齐数量"""
     unseen = [q for q in pool if q["id"] not in seen]
     if len(unseen) >= k:
         return random.sample(unseen, k), 0
@@ -83,26 +91,24 @@ def pick_questions_without_repeat(pool, seen, k):
     picked += random.sample(seen_pool, need)
     return picked, need
 
-# ====== 生成试卷（一次会话固定） ======
+# ---------------- 生成试卷 ----------------
 if "quiz" not in st.session_state:
     st.session_state.started_at = datetime.utcnow().isoformat(timespec="seconds")
-    st.session_state.quiz, st.session_state.repeat_fill_count = pick_questions_without_repeat(
-        candidate, seen_set, QUESTIONS_PER_QUIZ
-    )
+    st.session_state.quiz, st.session_state.repeat_fill_count = pick_questions_without_repeat(candidate, seen_set, QUESTIONS_PER_QUIZ)
     st.session_state.submitted = False
+    st.session_state.last_attempt_id = None
 
-colA, colB = st.columns([1,1])
-if colA.button("🔄 重新抽题（新一套5题）"):
+c1, c2 = st.columns(2)
+if c1.button("🔄 重新抽题（新一套5题）"):
     st.session_state.started_at = datetime.utcnow().isoformat(timespec="seconds")
-    st.session_state.quiz, st.session_state.repeat_fill_count = pick_questions_without_repeat(
-        candidate, seen_set, QUESTIONS_PER_QUIZ
-    )
+    st.session_state.quiz, st.session_state.repeat_fill_count = pick_questions_without_repeat(candidate, seen_set, QUESTIONS_PER_QUIZ)
     st.session_state.submitted = False
+    st.session_state.last_attempt_id = None
     st.rerun()
 
-if colB.button("♻️ 清空我的做题历史（重新开始无重复抽题）"):
+if c2.button("♻️ 清空我的做题历史（重新开始无重复抽题）"):
     quiz_db.reset_seen(user_key)
-    st.success("已清空你的历史做题记录。请点击“重新抽题”。")
+    st.success("已清空历史做题记录，请重新抽题。")
     st.rerun()
 
 quiz = st.session_state.quiz
@@ -110,7 +116,7 @@ repeat_fill = st.session_state.get("repeat_fill_count", 0)
 if repeat_fill > 0:
     st.info(f"题库中你未做过的题不足5题，本次有 {repeat_fill} 题从已做过题中补齐。")
 
-# ====== 答题界面 ======
+# ---------------- 答题区 ----------------
 st.subheader("📝 答题区（共5题）")
 user_answers = []
 
@@ -120,24 +126,21 @@ for i, q in enumerate(quiz, start=1):
     if q["type"] == "single_choice":
         labels = [f"{k}. {v}" for k, v in q["options"].items()]
         choice = st.radio(q["question"], labels, key=f"q{i}")
-        user_answers.append(choice.split(".", 1)[0])  # A/B/C/D
+        user_answers.append(choice.split(".", 1)[0])
 
     elif q["type"] == "true_false":
         tf_labels = ["√（正确）", "×（错误）"]
         choice = st.radio(q["question"], tf_labels, key=f"q{i}")
         user_answers.append(True if choice.startswith("√") else False)
-
     else:
-        st.warning(f"未知题型：{q['type']}")
         user_answers.append(None)
 
-# ====== 提交并评分（如果今天已提交过，则禁用提交按钮）=====
+# ---------------- 提交评分 ----------------
 submit_disabled = already
-
 if st.button("✅ 提交并评分", disabled=submit_disabled):
     started_at = st.session_state.get("started_at", datetime.utcnow().isoformat(timespec="seconds"))
     submitted_at = datetime.utcnow().isoformat(timespec="seconds")
-    attempt_date = today  # 以UTC日期控制“一天一次”
+    attempt_date = today
 
     score = 0
     answer_rows = []
@@ -147,12 +150,10 @@ if st.button("✅ 提交并评分", disabled=submit_disabled):
         correct = q["answer"]
         ua = user_answers[idx]
         is_right = (ua == correct)
-
         if is_right:
             score += POINTS_PER_Q
 
         question_ids.append(q["id"])
-
         answer_rows.append({
             "question_id": q["id"],
             "system": q["system"],
@@ -164,7 +165,6 @@ if st.button("✅ 提交并评分", disabled=submit_disabled):
 
     passed = score >= PASS_SCORE
 
-    # 1) 保存考试记录
     attempt_id = quiz_db.save_attempt(
         user_info=user_info,
         systems=selected_systems,
@@ -175,79 +175,98 @@ if st.button("✅ 提交并评分", disabled=submit_disabled):
         submitted_at=submitted_at,
         answer_rows=answer_rows
     )
-
-    # 2) 标记已做题（用于“避免重复抽题”）
     quiz_db.mark_seen(user_key, question_ids)
 
     st.session_state.submitted = True
     st.session_state.last_score = score
     st.session_state.last_attempt_id = attempt_id
     st.session_state.last_details = answer_rows
-
     st.rerun()
 
-# ====== 展示结果 ======
+# ---------------- 展示评分结果 ----------------
 if st.session_state.get("submitted"):
     score = st.session_state.last_score
     attempt_id = st.session_state.last_attempt_id
 
-    st.success(f"🎯 本次得分：{score} / 100（Attempt ID: {attempt_id}）")
-
-    if score >= PASS_SCORE:
-        st.success("✅ 恭喜通过（≥80分），可以参加线下盖章！")
-    else:
-        st.error("❌ 未通过（<80分），请复习后改天再考。")
-
-    st.markdown("### 详细答题结果")
+    st.success(f"🎯 本次得分：{score}/100（Attempt ID: {attempt_id}）")
     st.dataframe(st.session_state.last_details, use_container_width=True, hide_index=True)
 
-# ====== 我的考试历史（最近10次） ======
+    # ========== 通过后抽奖（限量奖池） ==========
+    if score >= PASS_SCORE:
+        st.success("✅ 恭喜通过（≥80分），可以参加转盘抽奖！")
+        st.caption("规则：每次通过考试可抽奖1次；奖品数量有限，抽完即止；结果会记录在系统中，请截图用于兑奖核对。")
+
+        # 显示库存
+        inv_rows = quiz_db.get_prize_inventory()
+        inv_show = [{"奖项": t, "剩余": r, "总数": tot} for (t, tot, r) in inv_rows]
+        st.markdown("### 🎁 当前奖品库存（剩余/总数）")
+        st.table(inv_show)
+
+        # 已抽过则直接显示
+        existing = quiz_db.get_win_by_attempt(int(attempt_id))
+        if existing:
+            tier, prize_name, win_time = existing
+            st.info(f"你已抽过奖：{tier}（{prize_name}） | 时间：{win_time} UTC")
+        else:
+            if st.button("🎡 开始抽奖（转盘）"):
+                result = quiz_db.draw_prize_once(
+                    attempt_id=int(attempt_id),
+                    user_info=user_info,
+                    prize_config=PRIZE_CONFIG,
+                    weights=PRIZE_WEIGHTS
+                )
+                if result["tier"] == "未中奖":
+                    st.warning("🍀 很遗憾：未中奖（可能奖品已抽完或概率未中）")
+                else:
+                    st.success(f"🎉 恭喜中奖：{result['tier']}（{result['prize_name']}）")
+                st.caption("请截图保存用于兑奖核对。")
+                st.rerun()
+    else:
+        st.error("❌ 未通过（<80分），请复习后再次参加考试。")
+
+# ---------------- 我的考试记录（最近10次） ----------------
 st.subheader("📚 我的考试记录（最近10次）")
 rows = quiz_db.list_attempts(user_key, limit=10)
-if not rows:
-    st.write("暂无记录。")
-else:
+if rows:
     hist = []
-    for (attempt_id, score, passed, attempt_date, started_at, submitted_at, systems_json) in rows:
+    for (aid, sc, passed, attempt_date, started_at, submitted_at, systems_json) in rows:
         try:
             sys_list = json.loads(systems_json) if systems_json else []
         except Exception:
             sys_list = []
         hist.append({
-            "Attempt ID": attempt_id,
+            "Attempt ID": aid,
             "日期(UTC)": attempt_date,
             "姓名": user_info["name"],
             "部门": user_info["department"],
             "员工号": user_info["employee_id"],
-            "分数": score,
+            "分数": sc,
             "是否通过(≥80)": "✅" if passed == 1 else "❌",
             "开始时间(UTC)": started_at,
             "提交时间(UTC)": submitted_at,
             "范围": ",".join(sys_list) if sys_list else "全部"
         })
-    df_hist = pd.DataFrame(hist)
-    st.dataframe(df_hist, use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(hist), use_container_width=True, hide_index=True)
+else:
+    st.write("暂无记录。")
 
-# ====== 导出Excel成绩单（你要的功能）=====
+# ---------------- 导出成绩单（Excel） ----------------
 st.subheader("⬇️ 导出成绩单（Excel）")
-
 def build_excel_for_user(user_key: str):
     attempts = quiz_db.list_attempts(user_key, limit=2000)
-
-    # Sheet1: attempts
     attempt_rows = []
-    for (attempt_id, score, passed, attempt_date, started_at, submitted_at, systems_json) in attempts:
+    for (aid, sc, passed, attempt_date, started_at, submitted_at, systems_json) in attempts:
         try:
             sys_list = json.loads(systems_json) if systems_json else []
         except Exception:
             sys_list = []
         attempt_rows.append({
-            "Attempt ID": attempt_id,
+            "Attempt ID": aid,
             "日期(UTC)": attempt_date,
             "姓名": user_info["name"],
             "部门": user_info["department"],
             "员工号": user_info["employee_id"],
-            "分数": score,
+            "分数": sc,
             "是否通过(≥80)": "PASS" if passed == 1 else "FAIL",
             "开始时间(UTC)": started_at,
             "提交时间(UTC)": submitted_at,
@@ -255,13 +274,12 @@ def build_excel_for_user(user_key: str):
         })
     df_attempts = pd.DataFrame(attempt_rows)
 
-    # Sheet2: answers（默认导出最近一次attempt的明细，便于盖章核对）
     df_answers = pd.DataFrame()
     if attempts:
-        latest_attempt_id = attempts[0][0]
-        ans = quiz_db.get_attempt_answers(latest_attempt_id)
+        latest_aid = attempts[0][0]
+        ans = quiz_db.get_attempt_answers(latest_aid)
         df_answers = pd.DataFrame([{
-            "Attempt ID": latest_attempt_id,
+            "Attempt ID": latest_aid,
             "题目ID": qid,
             "系统": sys,
             "题型": qtype,
@@ -279,7 +297,6 @@ def build_excel_for_user(user_key: str):
     return bio.getvalue()
 
 excel_bytes = build_excel_for_user(user_key)
-
 st.download_button(
     label="📥 下载我的成绩单（attempts + 最近一次明细）",
     data=excel_bytes,
@@ -287,4 +304,14 @@ st.download_button(
     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 )
 
-st.caption("提示：成绩单字段包含姓名/部门/员工号/得分/是否通过/时间，便于线下盖章核对。【2-a582d9】")
+# ---------------- 中奖记录统计（最新200条） ----------------
+st.subheader("📌 抽奖中奖记录（最新200条）")
+wins = quiz_db.list_wins(limit=200)
+if wins:
+    st.dataframe(
+        [{"中奖时间(UTC)": w[0], "姓名": w[1], "部门": w[2], "员工号": w[3], "奖项": w[4], "奖品": w[5], "AttemptID": w[6]} for w in wins],
+        use_container_width=True,
+        hide_index=True
+    )
+else:
+    st.write("暂无中奖记录。")
