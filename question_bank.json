@@ -1,0 +1,1101 @@
+{
+  "meta": {
+    "generated_at": "2026-05-26T06:16:52",
+    "sources": [
+      {
+        "file": "DHS-CN_Test_Questions.docx",
+        "system": "DHS-CN"
+      },
+      {
+        "file": "MES问题.docx",
+        "system": "MES"
+      },
+      {
+        "file": "WMS WCS E-Coding CCMS.docx",
+        "system": "WMS-CN/WCS/E-Coding/CCMS"
+      }
+    ],
+    "quiz_default": {
+      "questions_per_quiz": 5,
+      "points_per_question": 20,
+      "pass_score": 80
+    }
+  },
+  "questions": [
+    {
+      "id": "DHS-SC-1",
+      "system": "DHS-CN",
+      "type": "single_choice",
+      "question": "DHS-CN系统中，系统管理员通常由哪类人员担任？",
+      "options": {
+        "A": "业务人员",
+        "B": "IT人员",
+        "C": "QA人员",
+        "D": "普通用户"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "DHS-SC-2",
+      "system": "DHS-CN",
+      "type": "single_choice",
+      "question": "用户申请DHS-CN系统访问权限前，必须完成以下哪项？",
+      "options": {
+        "A": "提交JIRA",
+        "B": "完成DHS-CN培训课程",
+        "C": "获得QA批准",
+        "D": "创建PI Vision显示"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "DHS-SC-3",
+      "system": "DHS-CN",
+      "type": "single_choice",
+      "question": "DHS-CN系统用户登录主要通过哪种方式验证？",
+      "options": {
+        "A": "本地账户",
+        "B": "第三方邮箱",
+        "C": "个人邮箱账号",
+        "D": "手工审核"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "DHS-SC-4",
+      "system": "DHS-CN",
+      "type": "single_choice",
+      "question": "DHS-CN用户访问权限周期性复核的频率是？",
+      "options": {
+        "A": "每月",
+        "B": "每3个月",
+        "C": "每6个月",
+        "D": "每年"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "DHS-SC-5",
+      "system": "DHS-CN",
+      "type": "single_choice",
+      "question": "DHS-CN系统中CN表示中国，DHS的全称是？",
+      "options": {
+        "A": "Data Historian System",
+        "B": "Data Hosting System",
+        "C": "Deviation Handling System",
+        "D": "Digital Hardware Service"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "DHS-SC-6",
+      "system": "DHS-CN",
+      "type": "single_choice",
+      "question": "DHS-CN系统问题报告通常通过哪个渠道提交？",
+      "options": {
+        "A": "电话",
+        "B": "AskIT邮件/JIRA",
+        "C": "现场口头",
+        "D": "系统弹窗"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "DHS-SC-7",
+      "system": "DHS-CN",
+      "type": "single_choice",
+      "question": "在PI Vision中创建新的显示，应点击哪个按钮？",
+      "options": {
+        "A": "Save",
+        "B": "Search",
+        "C": "New Display",
+        "D": "Settings"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "DHS-SC-8",
+      "system": "DHS-CN",
+      "type": "single_choice",
+      "question": "PI Vision中用于展示时间序列数据曲线的常用符号是？",
+      "options": {
+        "A": "Value",
+        "B": "Trend",
+        "C": "Table",
+        "D": "Gauge"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "DHS-SC-9",
+      "system": "DHS-CN",
+      "type": "single_choice",
+      "question": "PI DataLink主要集成在哪种软件中使用？",
+      "options": {
+        "A": "Word",
+        "B": "PowerPoint",
+        "C": "Excel",
+        "D": "Outlook"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "DHS-SC-10",
+      "system": "DHS-CN",
+      "type": "single_choice",
+      "question": "DHS-CN系统数据备份机制是？",
+      "options": {
+        "A": "手工备份",
+        "B": "每周备份",
+        "C": "自动备份",
+        "D": "无备份"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "DHS-TF-1",
+      "system": "DHS-CN",
+      "type": "true_false",
+      "question": "DHS-CN系统管理员可以禁用系统审计追踪配置。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": false
+    },
+    {
+      "id": "DHS-TF-2",
+      "system": "DHS-CN",
+      "type": "true_false",
+      "question": "普通业务用户在DHS-CN系统中只有数据读取权限。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": true
+    },
+    {
+      "id": "DHS-TF-3",
+      "system": "DHS-CN",
+      "type": "true_false",
+      "question": "DHS-CN系统变更需要遵循IT变更管理流程。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": true
+    },
+    {
+      "id": "DHS-TF-4",
+      "system": "DHS-CN",
+      "type": "true_false",
+      "question": "PI Vision是一个基于Web的数据可视化工具。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": true
+    },
+    {
+      "id": "DHS-TF-5",
+      "system": "DHS-CN",
+      "type": "true_false",
+      "question": "DHS-CN是广州工厂本地的系统，遵循广州工厂的验证管理流程。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": false
+    },
+    {
+      "id": "MES-SC-1",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES的全称是什么？",
+      "options": {
+        "A": "Manufacturing Execution System",
+        "B": "Material Execution System",
+        "C": "Manufacturing Enterprise Solution",
+        "D": "Material Enterprise System"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "MES-SC-2",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统目前与哪两个系统有接口？",
+      "options": {
+        "A": "SAP与DCS",
+        "B": "LIMS与DHS",
+        "C": "CMMS与SAP",
+        "D": "DCS与LIMS"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "MES-SC-3",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "以下哪项不属于MES的核心功能？",
+      "options": {
+        "A": "生产过程标准化",
+        "B": "质量管理与追溯",
+        "C": "财务报表生成",
+        "D": "数据分析与报告"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "MES-SC-4",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统中，哪个模块负责生产操作执行？",
+      "options": {
+        "A": "生产管理",
+        "B": "生产执行",
+        "C": "物料管理",
+        "D": "质量管理"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "MES-SC-5",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统与ERP系统的关系是？",
+      "options": {
+        "A": "MES替代ERP系统",
+        "B": "MES作为连接现场控制层和企业管理层的中间层",
+        "C": "ERP只管理设备",
+        "D": "ERP只管理数据分析"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "MES-SC-6",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统中，处方设计模块不包含以下哪个功能？",
+      "options": {
+        "A": "处方编辑",
+        "B": "处方发布",
+        "C": "历史版本对比",
+        "D": "财务预算"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "MES-SC-7",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统中设备管理模块不包括以下哪项？",
+      "options": {
+        "A": "设备类管理",
+        "B": "设备状态管理",
+        "C": "设备维修计划",
+        "D": "设备属性管理"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "MES-SC-8",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统中，数据管理模块不包含以下哪个内容？",
+      "options": {
+        "A": "设备点位连通性",
+        "B": "设备状态历史",
+        "C": "设备使用历史",
+        "D": "数据分析"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "MES-SC-9",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统支持的生产流程中，USP制造主要指的是？",
+      "options": {
+        "A": "上游生产环节，如配液和发酵",
+        "B": "下游纯化和分离",
+        "C": "制剂生产与包装",
+        "D": "物料准备"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "MES-SC-10",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统中，批记录查询属于哪个模块的功能？",
+      "options": {
+        "A": "生产管理",
+        "B": "处方设计",
+        "C": "生产执行",
+        "D": "数据管理"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "MES-SC-11",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统中，异常管理的功能不包括以下哪项？",
+      "options": {
+        "A": "异常关闭",
+        "B": "异常审核",
+        "C": "异常记录",
+        "D": "财务审计"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "MES-SC-12",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统中，以下哪项不是设备属性？",
+      "options": {
+        "A": "风速",
+        "B": "压差",
+        "C": "重量",
+        "D": "员工数量"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "MES-SC-13",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统中，称重配料模块主要用于？",
+      "options": {
+        "A": "设备校验",
+        "B": "物料称量和配料",
+        "C": "生产调度",
+        "D": "质量报告"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "MES-SC-14",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统中，电子批记录（EBR）主要作用是？",
+      "options": {
+        "A": "记录生产批次的详细信息",
+        "B": "设备维护管理",
+        "C": "物料采购管理",
+        "D": "财务报表"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "MES-SC-15",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统中，以下哪个系统目前及未来不是直接与MES集成的？",
+      "options": {
+        "A": "SAP系统",
+        "B": "DCS系统",
+        "C": "LIMS系统",
+        "D": "财务管理系统"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "MES-SC-16",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统中，数据接口集成模块的作用是？",
+      "options": {
+        "A": "实现MES与外部系统的数据交互",
+        "B": "设备维护管理",
+        "C": "生产计划制定",
+        "D": "质量检测"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "MES-SC-17",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统中，工作流管理的主要作用是？",
+      "options": {
+        "A": "管理生产辅助流程和步骤",
+        "B": "管理设备维修计划",
+        "C": "管理财务预算",
+        "D": "管理员工考勤"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "MES-SC-18",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统中，生产执行模块不包含以下哪项？",
+      "options": {
+        "A": "领料管理",
+        "B": "工作流执行",
+        "C": "财务报表生成",
+        "D": "生产工单执行"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "MES-SC-19",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统在广州工厂没有覆盖哪个车间？",
+      "options": {
+        "A": "称量中心",
+        "B": "DS2",
+        "C": "DP",
+        "D": "ADC"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "MES-SC-20",
+      "system": "MES",
+      "type": "single_choice",
+      "question": "MES系统的主要目标是？",
+      "options": {
+        "A": "优化和管理生产过程，确保生产质量和效率",
+        "B": "管理企业财务",
+        "C": "管理客户关系",
+        "D": "管理销售渠道"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "MES-TF-1",
+      "system": "MES",
+      "type": "true_false",
+      "question": "MES系统中，电子批记录主要作用是？\nA. 记录生产批次的详细信息\nB. 设备维护管理\nC. 物料采购管理\nD. 财务报表",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": false
+    },
+    {
+      "id": "MES-TF-2",
+      "system": "MES",
+      "type": "true_false",
+      "question": "MES系统只能用于制药行业。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": true
+    },
+    {
+      "id": "MES-TF-3",
+      "system": "MES",
+      "type": "true_false",
+      "question": "MES系统可以实现生产过程的实时监控。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": false
+    },
+    {
+      "id": "MES-TF-4",
+      "system": "MES",
+      "type": "true_false",
+      "question": "MES系统不涉及质量管理功能。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": true
+    },
+    {
+      "id": "MES-TF-5",
+      "system": "MES",
+      "type": "true_false",
+      "question": "MES系统能够支持从原材料到成品的全流程追溯。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": false
+    },
+    {
+      "id": "MES-TF-6",
+      "system": "MES",
+      "type": "true_false",
+      "question": "MES系统中的设备管理只管理设备的名称和编号。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": false
+    },
+    {
+      "id": "MES-TF-7",
+      "system": "MES",
+      "type": "true_false",
+      "question": "MES系统与ERP系统是相互独立，完全不集成的系统。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": true
+    },
+    {
+      "id": "MES-TF-8",
+      "system": "MES",
+      "type": "true_false",
+      "question": "MES系统可以生成电子批记录，方便批次管理。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": true
+    },
+    {
+      "id": "MES-TF-9",
+      "system": "MES",
+      "type": "true_false",
+      "question": "MES系统中的处方设计模块包括处方设计和版本管理功能。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": false
+    },
+    {
+      "id": "MES-TF-10",
+      "system": "MES",
+      "type": "true_false",
+      "question": "MES系统不支持异常管理功能。",
+      "options": {
+        "T": "√",
+        "F": "×"
+      },
+      "answer": true
+    },
+    {
+      "id": "WMS-CN-SC-1",
+      "system": "WMS-CN",
+      "type": "single_choice",
+      "question": "WMS-CN 的主要作用是？",
+      "options": {
+        "A": "管理财务数据",
+        "B": "管理仓库作业",
+        "C": "管理人员考勤",
+        "D": "管理客户信息"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "WMS-CN-SC-2",
+      "system": "WMS-CN",
+      "type": "single_choice",
+      "question": "下列哪项属于 WMS-CN 的核心功能？",
+      "options": {
+        "A": "入库管理",
+        "B": "工资核算",
+        "C": "项目审批",
+        "D": "邮件发送"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "WMS-CN-SC-3",
+      "system": "WMS-CN",
+      "type": "single_choice",
+      "question": "WMS-CN 中的“库存”指的是？",
+      "options": {
+        "A": "仓库人员数量",
+        "B": "仓库面积",
+        "C": "仓库中现有物料数量",
+        "D": "仓库租金"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "WMS-CN-SC-4",
+      "system": "WMS-CN",
+      "type": "single_choice",
+      "question": "使用 WMS-CN 可以主要提高哪方面效率？",
+      "options": {
+        "A": "财务结算效率",
+        "B": "仓储作业效率",
+        "C": "招聘效率",
+        "D": "办公审批效率"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "WMS-CN-SC-5",
+      "system": "WMS-CN",
+      "type": "single_choice",
+      "question": "出库操作一般发生在以下哪个环节？",
+      "options": {
+        "A": "采购",
+        "B": "发货",
+        "C": "盘点",
+        "D": "报废"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "WMS-CN-SC-6",
+      "system": "WMS-CN",
+      "type": "single_choice",
+      "question": "WMS-CN 中“库位管理”的目的是什么？",
+      "options": {
+        "A": "管理员工岗位",
+        "B": "管理货物存放位置",
+        "C": "管理系统权限",
+        "D": "管理供应商"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "WMS-CN-SC-7",
+      "system": "WMS-CN",
+      "type": "single_choice",
+      "question": "WMS-CN 通常会与哪个系统对接？",
+      "options": {
+        "A": "SAP系统",
+        "B": "OA 系统",
+        "C": "邮件系统",
+        "D": "门禁系统"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "WMS-CN-SC-8",
+      "system": "WMS-CN",
+      "type": "single_choice",
+      "question": "库存不准确最可能影响？",
+      "options": {
+        "A": "仓库运营",
+        "B": "员工培训",
+        "C": "合同管理",
+        "D": "系统登录"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "WMS-CN-SC-9",
+      "system": "WMS-CN",
+      "type": "single_choice",
+      "question": "WMS-CN 属于哪一类系统？",
+      "options": {
+        "A": "财务系统",
+        "B": "仓储管理系统",
+        "C": "人力系统",
+        "D": "办公系统"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "WMS-CN-SC-10",
+      "system": "WMS-CN",
+      "type": "single_choice",
+      "question": "使用 WMS-CN 的目标之一是？",
+      "options": {
+        "A": "减少数据记录",
+        "B": "提高库存准确率",
+        "C": "增加人工操作",
+        "D": "增加纸质单据"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "WCS-SC-1",
+      "system": "WCS",
+      "type": "single_choice",
+      "question": "WCS 的主要功能是？",
+      "options": {
+        "A": "控制仓库自动化设备",
+        "B": "管理库存账目",
+        "C": "管理采购订单",
+        "D": "管理人员考勤"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "WCS-SC-2",
+      "system": "WCS",
+      "type": "single_choice",
+      "question": "WCS 通常控制以下哪类设备？",
+      "options": {
+        "A": "打印机",
+        "B": "输送线、堆垛机",
+        "C": "服务器",
+        "D": "扫描仪"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "WCS-SC-3",
+      "system": "WCS",
+      "type": "single_choice",
+      "question": "WCS 一般位于哪两个系统之间？",
+      "options": {
+        "A": "ERP 与 OA",
+        "B": "WMS 与自动化设备",
+        "C": "财务与人事",
+        "D": "系统与用户"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "WCS-SC-4",
+      "system": "WCS",
+      "type": "single_choice",
+      "question": "下列哪项不属于 WCS 的职责？",
+      "options": {
+        "A": "设备调度",
+        "B": "设备状态监控",
+        "C": "员工工资计算",
+        "D": "作业指令执行"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "WCS-SC-5",
+      "system": "WCS",
+      "type": "single_choice",
+      "question": "WCS 的作业指令通常来自？",
+      "options": {
+        "A": "ERP",
+        "B": "OA",
+        "C": "WMS",
+        "D": "HR"
+      },
+      "answer": "C"
+    },
+    {
+      "id": "WCS-SC-6",
+      "system": "WCS",
+      "type": "single_choice",
+      "question": "WCS 更关注什么？",
+      "options": {
+        "A": "报表统计",
+        "B": "设备实时运行",
+        "C": "业务制度",
+        "D": "人员管理"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "WCS-SC-7",
+      "system": "WCS",
+      "type": "single_choice",
+      "question": "下列哪种仓库更需要 WCS？",
+      "options": {
+        "A": "纯人工仓库",
+        "B": "自动化立体仓库",
+        "C": "办公室仓库",
+        "D": "文件档案室"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "WCS-SC-8",
+      "system": "WCS",
+      "type": "single_choice",
+      "question": "WCS 故障最可能影响？",
+      "options": {
+        "A": "自动化设备运行",
+        "B": "财务结账",
+        "C": "合同审批",
+        "D": "邮件通信"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "WCS-SC-9",
+      "system": "WCS",
+      "type": "single_choice",
+      "question": "WCS 通常实时反馈哪类信息？",
+      "options": {
+        "A": "员工状态",
+        "B": "设备运行状态",
+        "C": "库存成本",
+        "D": "销售数据"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "WCS-SC-10",
+      "system": "WCS",
+      "type": "single_choice",
+      "question": "WCS 与 WMS 的关系是？",
+      "options": {
+        "A": "相互独立",
+        "B": "WMS 向 WCS 下发作业任务",
+        "C": "WCS 管理 WMS",
+        "D": "WCS 直接管理 ERP"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "E-Coding-SC-1",
+      "system": "E-Coding",
+      "type": "single_choice",
+      "question": "爱创电子赋码系统主要用于？",
+      "options": {
+        "A": "人员管理",
+        "B": "产品电子赋码",
+        "C": "财务核算",
+        "D": "设备控制"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "E-Coding-SC-2",
+      "system": "E-Coding",
+      "type": "single_choice",
+      "question": "一个电子码通常对应？",
+      "options": {
+        "A": "多个产品",
+        "B": "一个唯一产品",
+        "C": "一个仓库",
+        "D": "一个供应商"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "E-Coding-SC-3",
+      "system": "E-Coding",
+      "type": "single_choice",
+      "question": "下列哪项是电子赋码的典型用途？",
+      "options": {
+        "A": "防伪溯源",
+        "B": "员工考勤",
+        "C": "工资发放",
+        "D": "项目审批"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "E-Coding-SC-4",
+      "system": "E-Coding",
+      "type": "single_choice",
+      "question": "E-Coding 系统常用于哪类行业？",
+      "options": {
+        "A": "医药、快消品",
+        "B": "教育",
+        "C": "房地产",
+        "D": "咨询行业"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "E-Coding-SC-5",
+      "system": "E-Coding",
+      "type": "single_choice",
+      "question": "电子码的主要特点是？",
+      "options": {
+        "A": "可重复",
+        "B": "唯一性",
+        "C": "手工填写",
+        "D": "不可追溯"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "E-Coding-SC-6",
+      "system": "E-Coding",
+      "type": "single_choice",
+      "question": "消费者扫码后通常可以获取？",
+      "options": {
+        "A": "产品溯源信息",
+        "B": "员工信息",
+        "C": "财务报表",
+        "D": "系统日志"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "E-Coding-SC-7",
+      "system": "E-Coding",
+      "type": "single_choice",
+      "question": "下列哪项不属于 E-Coding 系统功能？",
+      "options": {
+        "A": "赋码管理",
+        "B": "码关联产品",
+        "C": "防窜货管理",
+        "D": "薪资核算"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "E-Coding-SC-8",
+      "system": "E-Coding",
+      "type": "single_choice",
+      "question": "使用电子赋码的主要好处是？",
+      "options": {
+        "A": "提高产品可追溯性",
+        "B": "增加人工操作",
+        "C": "降低系统安全",
+        "D": "减少数据记录"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "E-Coding-SC-9",
+      "system": "E-Coding",
+      "type": "single_choice",
+      "question": "E-Coding 通常与哪种技术结合使用？",
+      "options": {
+        "A": "二维码 / 一物一码",
+        "B": "邮件系统",
+        "C": "门禁系统",
+        "D": "视频会议"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "E-Coding-SC-10",
+      "system": "E-Coding",
+      "type": "single_choice",
+      "question": "爱创电子赋码系统的核心目标是？",
+      "options": {
+        "A": "简化办公",
+        "B": "产品防伪与追溯",
+        "C": "人员绩效管理",
+        "D": "仓库排程"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "CCMS-SC-1",
+      "system": "CCMS",
+      "type": "single_choice",
+      "question": "CCMS 主要管理的对象是？",
+      "options": {
+        "A": "仓库设备",
+        "B": "洁净服",
+        "C": "财务单据",
+        "D": "客户资料"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "CCMS-SC-2",
+      "system": "CCMS",
+      "type": "single_choice",
+      "question": "CCMS 多用于以下哪类环境？",
+      "options": {
+        "A": "普通办公环境",
+        "B": "洁净车间",
+        "C": "商务写字楼",
+        "D": "展示厅"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "CCMS-SC-3",
+      "system": "CCMS",
+      "type": "single_choice",
+      "question": "洁净服管理的重要目的之一是？",
+      "options": {
+        "A": "满足洁净规范要求",
+        "B": "降低员工工资",
+        "C": "提高考勤准确性",
+        "D": "增加库存数量"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "CCMS-SC-4",
+      "system": "CCMS",
+      "type": "single_choice",
+      "question": "CCMS 可以记录哪类信息？",
+      "options": {
+        "A": "洁净服清洗记录",
+        "B": "员工薪资",
+        "C": "合同金额",
+        "D": "销售业绩"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "CCMS-SC-5",
+      "system": "CCMS",
+      "type": "single_choice",
+      "question": "洁净服通常需要？",
+      "options": {
+        "A": "一次性使用",
+        "B": "定期清洗和消毒",
+        "C": "长期不更换",
+        "D": "随意借用"
+      },
+      "answer": "B"
+    },
+    {
+      "id": "CCMS-SC-6",
+      "system": "CCMS",
+      "type": "single_choice",
+      "question": "下列哪项不属于 CCMS 功能？",
+      "options": {
+        "A": "发放管理",
+        "B": "回收管理",
+        "C": "清洗周期管理",
+        "D": "财务结算"
+      },
+      "answer": "D"
+    },
+    {
+      "id": "CCMS-SC-7",
+      "system": "CCMS",
+      "type": "single_choice",
+      "question": "CCMS 常结合哪种识别方式？",
+      "options": {
+        "A": "RFID 或条码",
+        "B": "指纹",
+        "C": "面部识别",
+        "D": "密码输入"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "CCMS-SC-8",
+      "system": "CCMS",
+      "type": "single_choice",
+      "question": "使用 CCMS 可以实现？",
+      "options": {
+        "A": "洁净服全流程追溯",
+        "B": "自动发工资",
+        "C": "自动排产",
+        "D": "项目管理"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "CCMS-SC-9",
+      "system": "CCMS",
+      "type": "single_choice",
+      "question": "洁净服未按要求管理，最可能影响？",
+      "options": {
+        "A": "产品质量",
+        "B": "办公效率",
+        "C": "财务核算",
+        "D": "员工考勤"
+      },
+      "answer": "A"
+    },
+    {
+      "id": "CCMS-SC-10",
+      "system": "CCMS",
+      "type": "single_choice",
+      "question": "CCMS 的核心目标是？",
+      "options": {
+        "A": "提高美观度",
+        "B": "规范洁净服使用与管理",
+        "C": "增加物料库存",
+        "D": "减少系统数量"
+      },
+      "answer": "B"
+    }
+  ]
+}
